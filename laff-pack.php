@@ -38,14 +38,33 @@ class LAFFPack {
 	 * @access public
 	 * @param array $boxes Array of boxes to pack
 	 */
-	function __construct($boxes = null)
+	function __construct($boxes = null, $container = null)
 	{		
 		if(isset($boxes) && is_array($boxes)) {
 			$this->boxes = $boxes;
 			$this->packed_boxes = array();
 			
 			// Calculate container size
-			$this->container_dimensions = $this->_calc_container_dimensions();
+			if(!is_array($container)) {
+				$this->container_dimensions = $this->_calc_container_dimensions();
+			}
+			else {
+				// Calculate container size
+				if(!is_array($container)) {
+					$this->container_dimensions = $this->_calc_container_dimensions();
+				}
+				else {
+					if(!array_key_exists('length', $container) ||
+						!array_key_exists('width', $container)) {
+							throw new InvalidArgumentException("Function _pack only accepts array (length, width, height) as argument for $container");
+					}
+				
+					$this->container_dimensions['length'] = $container['length'];
+					$this->container_dimensions['width'] = $container['width'];
+					
+					// Note: do NOT set height, it will be calculated on-the-go
+				}
+			}
 		}
 	}
 	
@@ -53,21 +72,36 @@ class LAFFPack {
 	 * Start packing boxes
 	 * 
 	 * @access public
+	 * @param array $boxes
+	 * @param array $container Set fixed container dimensions
 	 * @returns void
 	 */
-	function pack($boxes = null) {
-		if(is_array($boxes)) {
+	function pack($boxes = null, $container = null) {
+		if(isset($boxes) && is_array($boxes)) {
 			$this->boxes = $boxes;
 			$this->packed_boxes = array();
 			$this->level = -1;
 			$this->container_dimensions = null;
 			
 			// Calculate container size
-			$this->container_dimensions = $this->_calc_container_dimensions();
+			if(!is_array($container)) {
+				$this->container_dimensions = $this->_calc_container_dimensions();
+			}
+			else {
+				if(!array_key_exists('length', $container) ||
+					!array_key_exists('width', $container)) {
+						throw new InvalidArgumentException("Pack function only accepts array (length, width, height) as argument for \$container");
+				}
+			
+				$this->container_dimensions['length'] = $container['length'];
+				$this->container_dimensions['width'] = $container['width'];
+				
+				// Note: do NOT set height, it will be calculated on-the-go
+			}
 		}
 		
 		if(!isset($this->boxes)) {
-			return;
+			throw new InvalidArgumentException("Pack function only accepts array (length, width, height) as argument for \$boxes or no boxes given!");
 		}
 		
 		$this->pack_level();
@@ -201,11 +235,11 @@ class LAFFPack {
 	/**
 	 * Get longest edge from boxes
 	 *
-	 * @access private
+	 * @access public
 	 * @param array $edges Edges to select the longest from
 	 * @returns array
 	 */
-	private function _calc_longest_edge($boxes, $edges = array('length', 'width', 'height')) {
+	function _calc_longest_edge($boxes, $edges = array('length', 'width', 'height')) {
 		if(!isset($boxes) || !is_array($boxes)) {
 			throw new InvalidArgumentException('_calc_longest_edge function requires an array of boxes, '.typeof($boxes).' given');
 		}
@@ -233,10 +267,10 @@ class LAFFPack {
 	/**
 	 * Calculate container dimensions
 	 *
-	 * @access private
+	 * @access public
 	 * @returns array
 	 */
-	private function _calc_container_dimensions() {
+	function _calc_container_dimensions() {
 		if(!isset($this->boxes)){
 			return array(
 				'length' => 0,
@@ -266,13 +300,13 @@ class LAFFPack {
 	/**
 	 * Utility function to swap two elements in an array
 	 * 
-	 * @access private
+	 * @access public
 	 * @param array $array
 	 * @param mixed $el1 Index of item to be swapped
 	 * @param mixed $el2 Index of item to swap with
 	 * @returns array
 	 */ 
-	private function _swap($array, $el1, $el2) {
+	function _swap($array, $el1, $el2) {
 		if(!array_key_exists($el1, $array) || !array_key_exists($el2, $array)) {
 			throw new InvalidArgumentException("Both element to be swapped need to exist in the supplied array");
 		}
@@ -287,11 +321,11 @@ class LAFFPack {
 	/**
 	 * Utility function that returns the total volume of a box / container
 	 *
-	 * @access private
+	 * @access public
 	 * @param array $box
 	 * @returns float
 	 */
-	private function _get_volume($box)  {	
+	function _get_volume($box)  {	
 		if(!is_array($box) || count(array_keys($box)) < 3) {
 			throw new InvalidArgumentException("_get_volume function only accepts arrays with 3 values (length, width, height)");
 		}
@@ -333,12 +367,12 @@ class LAFFPack {
 	 * Check if box fits in specified space
 	 * and rotate (3d) if necessary
 	 *
-	 * @access private
+	 * @access public
 	 * @param array $box Box to fit in space
 	 * @param array $space Space to fit box in
 	 * @returns bool
 	 */
-	private function _box_fits($box, $space) {
+	function _box_fits($box, $space) {
 		$box = array_values($box);
 		$space = array_values($space);
 		
