@@ -291,8 +291,8 @@ class LAFFPack {
 		$sle = $this->_calc_longest_edge($boxes, $edges);
 		
 		return array(
-			'length' => $sle['edge_size'],
-			'width' => $le['edge_size'],
+			'length' => $le['edge_size'],
+			'width' => $sle['edge_size'],
 			'height' => 0
 		);
 	}
