@@ -63,6 +63,7 @@ class LAFFPack {
 					$this->container_dimensions['width'] = $container['width'];
 					
 					// Note: do NOT set height, it will be calculated on-the-go
+					$this->container_dimensions['height'] = 0;
 				}
 			}
 		}
@@ -97,6 +98,7 @@ class LAFFPack {
 				$this->container_dimensions['width'] = $container['width'];
 				
 				// Note: do NOT set height, it will be calculated on-the-go
+				$this->container_dimensions['height'] = 0;
 			}
 		}
 		
