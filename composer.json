@@ -1,0 +1,13 @@
+{
+  "name": "mdeboer/php-laff",
+  "description": "Largest Area Fit First (LAFF) 3D box packing algorithm class for PHP",
+  "minimum-stability": "dev",
+  "authors": [
+    {
+      "name": "Maarten de Boer"
+    },
+    {
+      "name": "Erik de Boer"
+    }
+  ]
+}
