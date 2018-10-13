@@ -1,7 +1,5 @@
 <?php
 
-require_once("../Packer.php");
-
 // Define our boxes
 $boxes = array(
 	array(
@@ -32,7 +30,7 @@ $boxes = array(
 );
 
 // Initialize LAFFPack
-$lp = new Mdeboer\PhpLaff\Packer();
+$lp = new \Cloudstek\PhpLaff\Packer();
 
 // Start packing our nice boxes
 $lp->pack($boxes);

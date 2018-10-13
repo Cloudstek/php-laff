@@ -1,12 +1,5 @@
 # Largest Area Fit First (LAFF) 3D box packing algorithm class for PHP #
 
-Version 1.0
-
-by Maarten de Boer
-
-With special thanks to:
-- Erik de Boer
-
 ## Introduction ##
 
 This PHP class helps to solve the so called "3D packing problem" often seen when packing containers with boxes (eg. for a webshop). It calculates the approximate minimum container size needed to fit the boxes and also gives additional information like on which level they are packed.

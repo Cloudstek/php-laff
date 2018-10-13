@@ -1,8 +1,7 @@
 <?php
 
-namespace Mdeboer\PhpLaff;
+namespace Cloudstek\PhpLaff;
 
-use InvalidArgumentException;
 use OutOfRangeException;
 
 /**
@@ -10,31 +9,36 @@ use OutOfRangeException;
  *
  * @author    Maarten de Boer <info@maartendeboer.net>
  * @copyright Maarten de Boer 2012
- * @version   1.0
- *
- * Also see this PDF document for an explanation about the LAFF algorithm:
- * @link      http://www.zahidgurbuz.com/yayinlar/An%20Efficient%20Algorithm%20for%203D%20Rectangular%20Box%20Packing.pdf
- *
- * Copyright (C) 2012 Maarten de Boer
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * @version   1.1.0
  */
 class Packer
 {
-    /** @var array $boxes Array of boxes to pack */
+    /**
+     * Array of boxes to pack
+     *
+     * @var array
+     */
     private $boxes = null;
 
-    /** @var array $packed_boxes Array of boxes that have been packed */
+    /**
+     * Array of boxes that have been packed
+     *
+     * @var array
+     */
     private $packed_boxes = null;
 
-    /** @var int $level Current level we're packing (0 based) */
+    /**
+     * Current level we're packing (0 based index)
+     *
+     * @var int
+     */
     private $level = -1;
 
-    /** @var array $container_dimensions Current container dimensions */
+    /**
+     * Current container dimensions
+     *
+     * @var array
+     */
     private $container_dimensions = null;
 
     /**
@@ -59,7 +63,7 @@ class Packer
                 } else {
                     if (!array_key_exists('length', $container) ||
                         !array_key_exists('width', $container)) {
-                        throw new InvalidArgumentException("Function _pack only accepts array (length, width, height) as argument for $container");
+                        throw new \InvalidArgumentException("Function _pack only accepts array (length, width, height) as argument for $container");
                     }
 
                     $this->container_dimensions['length'] = $container['length'];
@@ -92,7 +96,7 @@ class Packer
             } else {
                 if (!array_key_exists('length', $container) ||
                     !array_key_exists('width', $container)) {
-                    throw new InvalidArgumentException("Pack function only accepts array (length, width, height) as argument for \$container");
+                    throw new \InvalidArgumentException("Pack function only accepts array (length, width, height) as argument for \$container");
                 }
 
                 $this->container_dimensions['length'] = $container['length'];
@@ -104,7 +108,7 @@ class Packer
         }
 
         if (!isset($this->boxes)) {
-            throw new InvalidArgumentException("Pack function only accepts array (length, width, height) as argument for \$boxes or no boxes given!");
+            throw new \InvalidArgumentException("Pack function only accepts array (length, width, height) as argument for \$boxes or no boxes given!");
         }
 
         $this->pack_level();
@@ -216,7 +220,7 @@ class Packer
     public function get_level_dimensions($level = 0)
     {
         if ($level < 0 || $level > $this->level || !array_key_exists($level, $this->packed_boxes)) {
-            throw new OutOfRangeException("Level {$level} not found!");
+            throw new \OutOfRangeException(sprintf('Level %d not found!', $level));
         }
 
         $boxes = $this->packed_boxes;
@@ -239,6 +243,7 @@ class Packer
     /**
      * Get longest edge from boxes
      *
+     * @param array $boxes
      * @param array $edges Edges to select the longest from
      *
      * @return array
@@ -246,7 +251,7 @@ class Packer
     public function _calc_longest_edge($boxes, $edges = array('length', 'width', 'height'))
     {
         if (!isset($boxes) || !is_array($boxes)) {
-            throw new InvalidArgumentException('_calc_longest_edge function requires an array of boxes, ' . count($boxes) . ' given');
+            throw new \InvalidArgumentException('_calc_longest_edge function requires an array of boxes, ' . count($boxes) . ' given');
         }
 
         // Longest edge
@@ -314,7 +319,7 @@ class Packer
     public function _swap($array, $el1, $el2)
     {
         if (!array_key_exists($el1, $array) || !array_key_exists($el2, $array)) {
-            throw new InvalidArgumentException("Both element to be swapped need to exist in the supplied array");
+            throw new \InvalidArgumentException("Both element to be swapped need to exist in the supplied array");
         }
 
         $tmp         = $array[$el1];
@@ -334,7 +339,7 @@ class Packer
     public function _get_volume($box)
     {
         if (!is_array($box) || count(array_keys($box)) < 3) {
-            throw new InvalidArgumentException("_get_volume function only accepts arrays with 3 values (length, width, height)");
+            throw new \InvalidArgumentException("_get_volume function only accepts arrays with 3 values (length, width, height)");
         }
 
         $box = array_values($box);
@@ -353,11 +358,11 @@ class Packer
     private function _try_fit_box($box, $space)
     {
         if (count($box) < 3) {
-            throw new InvalidArgumentException("_try_fit_box function parameter $box only accepts arrays with 3 values (length, width, height)");
+            throw new \InvalidArgumentException("_try_fit_box function parameter $box only accepts arrays with 3 values (length, width, height)");
         }
 
         if (count($space) < 3) {
-            throw new InvalidArgumentException("_try_fit_box function parameter $space only accepts arrays with 3 values (length, width, height)");
+            throw new \InvalidArgumentException("_try_fit_box function parameter $space only accepts arrays with 3 values (length, width, height)");
         }
 
         for ($i = 0; $i < count($box); $i++) {
@@ -488,6 +493,8 @@ class Packer
 
     /**
      * Fills space with boxes recursively
+     *
+     * @param array $space
      */
     private function _fill_space($space)
     {
