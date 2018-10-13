@@ -22,8 +22,6 @@ PDF file of the document: <http://www.zahidgurbuz.com/yayinlar/An%20Efficient%20
 Example:
 
 	<?php
-		require_once("Packer.php");
-		
 		// Initialize boxes array
 		$boxes = array(
 			array(
@@ -39,12 +37,12 @@ Example:
 		);
 		
 		// Initialize Packer
-		$laff = new Mdeboer\PhpLaff\Packer();
+		$laff = new \Cloudstek\PhpLaff\Packer();
 		$laff->pack($boxes);
 		
 		// or
 		
-		$laff = new Mdeboer\PhpLaff\Packer($boxes);
+		$laff = new \Cloudstek\PhpLaff\Packer($boxes);
 		$laff->pack();
 	?>
 	
