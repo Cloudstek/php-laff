@@ -14,36 +14,35 @@ PDF file of the document: <http://www.zahidgurbuz.com/yayinlar/An%20Efficient%20
 
 ### Installation ###
 
-1. Include the Packer.php file in your php code
+1. Install with composer ```composer require cloudstek/php-laff``` or include the Packer.php file in your php code
 2. Initialize the Packer class
 3. Call the pack() method to start packing
 4. Sit back, sip a beer and relax!
 
 Example:
+```php
+// Initialize boxes array
+$boxes = array(
+	array(
+		'length' => 50,
+		'width'  => 35,
+		'height' => 23
+	),
+	array(
+		'length' => 18,
+		'width'  => 38,
+		'height' => 16
+	)
+);
 
-	<?php
-		// Initialize boxes array
-		$boxes = array(
-			array(
-				'length' => 50,
-				'width' => 35,
-				'height' => 23
-			),
-			array(
-				'length' => 18,
-				'width' => 38,
-				'height' => 16
-			)
-		);
-		
-		// Initialize Packer
-		$laff = new \Cloudstek\PhpLaff\Packer();
-		$laff->pack($boxes);
-		
-		// or
-		
-		$laff = new \Cloudstek\PhpLaff\Packer($boxes);
-		$laff->pack();
-	?>
+// Initialize Packer
+$laff = new \Cloudstek\PhpLaff\Packer();
+$laff->pack($boxes);
+
+// or
+
+$laff = new \Cloudstek\PhpLaff\Packer($boxes);
+$laff->pack();
+```
 	
 Please see the examples directory for more examples!
