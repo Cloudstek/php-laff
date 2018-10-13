@@ -1,0 +1,28 @@
+{
+    "name": "cloudstek/php-laff",
+    "description": "Largest Area Fit First (LAFF) 3D box packing algorithm class for PHP",
+    "minimum-stability": "dev",
+    "homepage": "https://github.com/Cloudstek/php-laff",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Maarten de Boer",
+            "email": "maarten@cloudstek.nl",
+            "homepage": "https://cloudstek.nl",
+            "role": "Developer"
+        },
+        {
+            "name": "Erik de Boer",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Cloudstek\\PhpLaff\\": "src/"
+        }
+    },
+    "support": {
+        "issues": "https://github.com/Cloudstek/php-laff/issues",
+        "source": "https://github.com/Cloudstek/php-laff"
+    }
+}
