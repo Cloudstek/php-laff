@@ -342,9 +342,9 @@ class Packer
             throw new \InvalidArgumentException("_get_volume function only accepts arrays with 3 values (length, width, height)");
         }
 
-        $box = array_values($box);
-
-        return $box[0] * $box[1] * $box[2];
+        $box = array_filter($box, 'strlen');
+        
+        return (isset($box['length'])?$box['length']:$box[0]) * (isset($box['width'])?$box['width']:$box[1]) * (isset($box['height'])?$box['height']:$box[2]);;
     }
 
     /**
